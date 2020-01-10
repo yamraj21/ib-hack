@@ -4,24 +4,24 @@ const express = require("express"),
   router = express.Router({ mergeParams: true });
 
 router.get("/", (req, res) => {
-  res.redirect("/login"); // to update
+  res.redirect("/login");
 });
 
 router.get("/login", (req, res) => {
-  res.render("login"); // to update
+  res.send({});
 });
 
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/tasks",
     failureRedirect: "/login"
   }),
   (req, res) => {}
 );
 
 router.get("/register", (req, res) => {
-  res.render("register"); // to update
+  res.send({});
 });
 
 router.post("/register", (req, res) => {
@@ -34,7 +34,7 @@ router.post("/register", (req, res) => {
         return res.redirect("/register");
       } else {
         passport.authenticate("local")(req, res, () => {
-          res.redirect("/");
+          res.redirect("/tasks");
         });
       }
     }
