@@ -56,6 +56,18 @@ router.get("/tasks/:id", (req, res) => {
   });
 });
 
+router.get("/tasks/:id/edit", (req, res) => {
+  Task.findById(req.params.id, (err, task) => {
+    if (err) {
+      console.log(err);
+      res.redirect("/tasks");
+    } else {
+      res.send({ task: task });
+    }
+  });
+});
+
+//update route
 router.post("tasks/:id", (req, res) => {
   Task.findByIdAndUpdate(req.params.id, req.body.task, (err, task) => {
     if (err) {
@@ -67,6 +79,7 @@ router.post("tasks/:id", (req, res) => {
   });
 });
 
+//delete route
 router.post("tasks/delete/:id", (req, res) => {
   Campground.findByIdAndDelete(req.params.id, (err, task) => {
     if (err) {
