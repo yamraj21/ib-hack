@@ -1,59 +1,64 @@
 const express = require("express"),
   router = express.Router(),
   middleware = require("../middlewares/index"),
-  Project = require("../models/project");
+  Project = require("../models/project"),
+  Task = require("../models/task"),
+  User = require("../models/user");
 
 router.use(middleware.isLoggedIn);
 
-router
-  .route("/projects")
-  .get((req, res) => {
-    Project.find({})
-      .where("_id")
-      .in(req.user.projects)
-      .exec((err, projects) => {
+router.get("/projects", (req, res) => {
+  Project.find({})
+    .where("_id")
+    .in(req.user.projects)
+    .exec((err, projects) => {
+      if (err) {
+        console.log(err);
+        res.redirect("/projects");
+      } else {
+        res.send({ projects: projects });
+      }
+    });
+});
+
+router.post("/projects", (req, res) => {
+  let project = req.body.project;
+  let user = req.user;
+  project.members.push(user._id);
+
+  Project.create(project, (err, project) => {
+    if (err) {
+      console.log(err);
+      res.redirect("/projects");
+    } else {
+      user.projects.push(project);
+      user.save((err, user) => {
         if (err) {
           console.log(err);
           res.redirect("/projects");
         } else {
-          res.send({ projects: projects });
+          res.redirect("/projects");
         }
       });
-  }) // show all route
-  .post((req, res) => {
-    let project = req.body.project;
-    let user = req.user;
-    Project.create(project, (err, project) => {
-      if (err) {
-        console.log(err);
-        res.redirect("/projects");
-      } else {
-        user.projects.push(project);
-        user.save((err, user) => {
-          if (err) {
-            console.log(err);
-            res.redirect("/projects");
-          } else {
-            res.redirect("/projects");
-          }
-        });
-      }
-    });
-  }); // create route
+    }
+  });
+});
 
-router
-  .route("/projects/:id")
-  .get((req, res) => {
-    Project.findById(req.params.id, (err, project) => {
-      if (err) {
-        console.log(err);
-        res.redirect("/projects");
-      } else {
-        res.send({ project: project });
-      }
-    });
-  }) //show one route
-  .post((req, res) => {
+router.get("/projects/:id", middleware.isProjectAccessAllowed, (req, res) => {
+  Project.findById(req.params.id, (err, project) => {
+    if (err) {
+      console.log(err);
+      res.redirect("/projects");
+    } else {
+      res.redirect("/projects/" + project._id + "/tasks");
+    }
+  });
+});
+
+router.post(
+  "/projects/:id/update",
+  middleware.isProjectAccessAllowed,
+  (req, res) => {
     Project.findByIdAndUpdate(
       req.params.id,
       req.body.project,
@@ -66,17 +71,48 @@ router
         }
       }
     );
-  }); // update route
+  }
+);
 
-router.route("/projects/:id/delete").post((req, res) => {
-  Project.findByIdAndDelete(req.params.id, (err, project) => {
-    if (err) {
-      console.log(err);
-      res.redirect("/projects");
-    } else {
-      res.redirect("/projects");
-    }
-  });
-}); // delete route
+router.post(
+  "/projects/:id/delete",
+  middleware.isProjectAccessAllowed,
+  (req, res) => {
+    Project.findById(req.params.id)
+      .populate("members")
+      .exec(async (err, project) => {
+        await project.members.forEach(member => {
+          member.projects = member.projects.filter(
+            member_project => member_project != project._id
+          );
+
+          User.findByIdAndUpdate(member._id, member, err => {
+            if (err) console.log(err);
+          });
+        });
+
+        await Task.deleteMany()
+          .where("_id")
+          .in(project.tasks)
+          .exec(err => {
+            if (err) console.log(err);
+          });
+
+        await Project.findByIdAndDelete(project._id, err => {
+          if (err) console.log(err);
+        });
+
+        res.render("/projects");
+      });
+    // Project.findByIdAndDelete(req.params.id, (err, project) => {
+    //   if (err) {
+    //     console.log(err);
+    //     res.redirect("/projects");
+    //   } else {
+    //     res.redirect("/projects");
+    //   }
+    // });
+  }
+);
 
 module.exports = router;
