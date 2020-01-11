@@ -42,12 +42,15 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
-
+app.use(express.static(__dirname + "/public"));
+app.set('view engine', 'ejs');
 ////////////////////Routes///////////////////////
 const indexRoutes = require("./routes/index"),
   tasksRoutes = require("./routes/tasks"),
   projectRoutes = require("./routes/projects");
-
+  app.get('/login',(req,res)=>{
+    res.render('demo')
+  })
 app.use("/", indexRoutes);
 app.use("/", tasksRoutes);
 app.use("/", projectRoutes);
