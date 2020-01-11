@@ -2,11 +2,13 @@ const express = require("express"),
   User = require("../models/user"),
   passport = require("passport"),
   router = express.Router({ mergeParams: true });
+
 router.get("/", (req, res) => {
   res.redirect("/login");
 });
+
 router.get("/login", (req, res) => {
-  res.render('')
+  res.render("auth");
 });
 
 router.post(
@@ -17,10 +19,6 @@ router.post(
   }),
   (req, res) => {}
 );
-
-router.get("/register", (req, res) => {
-  res.send({});
-});
 
 router.post("/register", (req, res) => {
   User.register(

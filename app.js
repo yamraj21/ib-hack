@@ -4,7 +4,8 @@ const express = require("express"),
   expressSession = require("express-session"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
-  User = require("./models/user");
+  User = require("./models/user"),
+  path = require('path');
 
 const PORT = process.env.PORT || 3000;
 
@@ -42,15 +43,15 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
-app.use(express.static(__dirname + "/public"));
+
+app.use(express.static(path.join(__dirname,"/public")));
 app.set('view engine', 'ejs');
+
 ////////////////////Routes///////////////////////
 const indexRoutes = require("./routes/index"),
   tasksRoutes = require("./routes/tasks"),
   projectRoutes = require("./routes/projects");
-  app.get('/login',(req,res)=>{
-    res.render('demo')
-  })
+  
 app.use("/", indexRoutes);
 app.use("/", tasksRoutes);
 app.use("/", projectRoutes);

@@ -10,7 +10,7 @@ router
   .get((req, res) => {
     Project.find({})
       .where("_id")
-      .in(req.currentUser.projects)
+      .in(req.user.projects)
       .exec((err, projects) => {
         if (err) {
           console.log(err);
@@ -22,7 +22,7 @@ router
   }) // show all route
   .post((req, res) => {
     let project = req.body.project;
-    let user = req.currentUser;
+    let user = req.user;
     Project.create(project, (err, project) => {
       if (err) {
         console.log(err);
