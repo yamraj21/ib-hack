@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node -r dotenv/config app",
+    "start": "node app"
   },
   "repository": {
     "type": "git",
@@ -17,13 +19,16 @@
   },
   "homepage": "https://github.com/yamraj21/ib-hack#readme",
   "dependencies": {
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "mongoose": "^5.8.6",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.0.1"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "prettier": "^1.19.1"
   }
 }
