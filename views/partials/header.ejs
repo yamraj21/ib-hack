@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Login</title>
+    <link rel="stylesheet" href="./../styles/login.css" />
+    <script src="./../scripts/login.js" defer></script>
+  </head>
+  <body>
+    <navbar>
+      <div>
+        <!-- display brand -->
+      </div>
+      <div>
+        <div>
+          <% if(!currentUser){ %>
+          <a class="nav-item nav-link" href="/login">Login</a>
+          <a class="nav-item nav-link" href="/register">Register</a>
+          <% } else{ %>
+          <a class="nav-item nav-link" href="#"
+            >Signed in as <%= currentUser.username%></a
+          >
+          <a class="nav-item nav-link" href="/logout">Logout</a>
+          <% } %>
+        </div>
+      </div>
+    </navbar>
