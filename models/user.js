@@ -5,10 +5,10 @@ const userSchema = new mongoose.Schema({
   username: String,
   email: String,
   password: String,
-  tasks: [
+  projects: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Task"
+      ref: "Project"
     }
   ]
 });
