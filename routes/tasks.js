@@ -1,72 +1,113 @@
 const express = require("express"),
   router = express.Router(),
   middleware = require("../middlewares/index"),
-  Project = require("../models/project");
-(Task = require("../models/task")), (User = require("../models/user"));
+  Project = require("../models/project"),
+  Task = require("../models/task");
 
 router.use(middleware.isLoggedIn);
+router.use(middleware.isProjectAccessAllowed);
 
-router
-  .route("/projects/:id/tasks")
-  .get((req, res) => {
-    Project.findById(req.params.id, (err, project) => {
+router.get("/projects/:id/tasks", (req, res) => {
+  Project.findById(req.params.id, (err, project) => {
+    if (err) {
+      console.log(err);
+      res.redirect("/projects");
+    } else {
       Task.find({})
         .in(project.tasks)
         .populate("assigned_to")
         .populate("created_by")
         .exec((err, tasks) => {
-          res.send({ tasks: tasks });
+          if (err) {
+            console.log(err);
+            res.redirect("/projects/" + req.params.id);
+          } else {
+            res.send({ tasks: tasks });
+          }
         });
-    });
-  })
-  .post((req, res) => {
-    let task = req.body.task;
-    Project.findById(req.params.id, (err, project) => {
-      project.tasks.push(task);
-      project.save((err, task) => {
-        if (err) {
-          console.log(err);
-          res.redirect("/tasks");
-        } else {
-          res.redirect("/tasks");
-        }
-      });
-    });
+    }
   });
+});
 
-router
-  .route("/projects/:id/tasks/:task_id")
-  .get((req, res) => {
+router.post("/projects/:id/tasks", (req, res) => {
+  let task = req.body.task;
+  Task.create(task, (err, task) => {
+    if (err) {
+      console.log(err);
+      res.redirect("/projects/" + req.params.id + "/tasks");
+    } else {
+      Project.findById(req.params.id, (err, project) => {
+        project.tasks.push(task);
+        project.save((err, task) => {
+          if (err) {
+            console.log(err);
+            res.redirect("/projects/" + req.params.id + "/tasks");
+          } else {
+            res.redirect("/projects/" + req.params.id + "/tasks");
+          }
+        });
+      });
+    }
+  });
+});
+
+router.get(
+  "/projects/:id/tasks/:task_id",
+  middleware.isTaskAccessAllowed,
+  (req, res) => {
     Task.findById(req.params.task_id, (err, task) => {
       if (err) {
         console.log(err);
-        res.redirect("/tasks");
+        res.redirect("/projects/" + req.params.id + "/tasks");
       } else {
         res.send({ task: task });
       }
     });
-  })
-  .post((req, res) => {
-    Task.findByIdAndUpdate(req.params.task_id, (err, task) => {
+  }
+);
+
+router.post(
+  "/projects/:id/tasks/:task_id/update",
+  middleware.isTaskAccessAllowed,
+  (req, res) => {
+    Task.findByIdAndUpdate(req.params.task_id, req.body.task, (err, task) => {
       if (err) {
         console.log(err);
-        res.redirect("/tasks");
+        res.redirect("/projects/" + req.params.id + "/tasks");
       } else {
-        res.redirect("/tasks");
+        res.redirect("/projects/" + req.params.id + "/tasks");
       }
     });
-  });
+  }
+);
 
-router.route("/projects/:id/tasks/:task_id/delete").post((req, res) => {
-  Task.findByIdAndDelete(req.params.task_id, (err, task) => {
-    if (err) {
-      console.log(err);
-      res.redirect("/tasks");
-    } else {
-      res.redirect("/tasks");
-    }
-  });
-});
+router.post(
+  "/projects/:id/tasks/:task_id/delete",
+  middleware.isTaskAccessAllowed,
+  (req, res) => {
+    Project.findById(req.params.id, async (err, project) => {
+      if (err) {
+        console.log(err);
+        res.redirect("/projects/" + req.params.id + "/tasks");
+      } else {
+        project.tasks = await project.tasks.filter(
+          project_task => project_task != req.params.task_id
+        );
+        await project.findByIdAndUpdate(project._id, project, err => {
+          if (err) console.log(err);
+        });
+        Task.findByIdAndDelete(req.params.task_id, (err, task) => {
+          if (err) {
+            console.log(err);
+            res.redirect("/projects/" + req.params.id + "/tasks");
+          } else {
+            res.redirect("/projects/" + req.params.id + "/tasks");
+          }
+        });
+      }
+    });
+  }
+);
 
 // router.get("/tasks", (req, res) => {
 //   Tasks.find({})

@@ -27,7 +27,7 @@ router.post("/register", (req, res) => {
     (err, user) => {
       if (err) {
         console.log(err);
-        return res.redirect("/register");
+        return res.redirect("/login");
       } else {
         passport.authenticate("local")(req, res, () => {
           res.redirect("/projects");

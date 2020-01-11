@@ -14,7 +14,9 @@ const taskSchema = new mongoose.Schema({
   created_by: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
-  }
+  },
+  work_left: Number,
+  work_per_day: Number
 });
 
 module.exports = mongoose.model("Task", taskSchema);
