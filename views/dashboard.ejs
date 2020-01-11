@@ -1,16 +1,80 @@
 <%- include('partials/dashboardHeader.ejs') -%>
+
 <nav>
     <div class="nav-wrapper">
         <a href="#" class="brand-logo right">Logo</a>
         <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li><a href="#">Create Task</a></li>
+            <li><a href="#">Create Project</a></li>
             <li><a href="#">Profile</a></li>
-            <li><a href="#">Logout</a></li>
+            <li><a href="/logout">Logout</a></li>
         </ul>
     </div>
 </nav>
-<div id="dashboar-vard">
-    welcome
+<% if(currentUser){ %>
+<div class="container top-margin">
+    <div class="row">
+        <div class="col s4 ">
+          <!-- Promo Content 1 goes here -->
+            <div class="card teal darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Get schedule</span>
+                    <p></p>
+                </div>
+                <div class="card-action">
+                    <!-- Modal Trigger -->
+                    <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
+                        Click here
+                    </a>
+                </div>
+        </div>
+        </div>
+        <div class="col s4">
+            <div class="card teal darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Create a task</span>
+                    <p></p>
+                </div>
+                <div class="card-action">
+                    <!-- Modal Trigger -->
+                    <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
+                        Click here
+                    </a>
+                </div>
+        </div>
+          <!-- Promo Content 2 goes here -->
+        </div>
+        <div class="col s4">
+          <!-- Promo Content 3 goes here -->
+            <div class="card  teal darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">all projects</span>
+                    <p></p>
+                </div>
+                <div class="card-action">
+                    <!-- Modal Trigger -->
+                    <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
+                        Click here
+                    </a>
+                </div>
+            </div>
+        </div>
+      </div>
+    <!-- Page Content goes here -->
+    
+
+    <!-- Modal Structure -->
+    <div id="todays-task" class="modal">
+        <div id='calendar'></div>
+    </div>
+    <% } else { %>
+        <div>
+            <i class="large material-icons">adb</i>
+        <form action="/login" method="GET">
+            <button>Need to login</button>
+        </form>
+        </div>  
+        <a class="waves-effect waves-light btn-large" href="#">Wave</a>
+ 
+    <%}%>
 </div>
-<div id='calendar'></div>
 <%- include('partials/dashboardFooter.ejs') -%>

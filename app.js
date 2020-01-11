@@ -44,23 +44,27 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname,"/public")));
+app.use(express.static(path.join(__dirname, "/public")));
 app.set('view engine', 'ejs');
 ////////////////////TEST ROUTE////////////////////////////////
-app.get('/dashboard',(req,res)=>{
+app.get('/dashboard', (req, res) => {
   res.render('dashboard');
 })
-
+var userJson = [{id: "a",title: "User A"},]
+app.get('/dummyUser', (req, res) => { res.json(userJson) })
 ////////////////////Routes///////////////////////
+app.get('/dashboard',(req,res)=>{
+  res.render('dashboard',{currentUser})
+})
 const indexRoutes = require("./routes/index"),
   tasksRoutes = require("./routes/tasks"),
   projectRoutes = require("./routes/projects");
-  
+
 app.use("/", indexRoutes);
 app.use("/", tasksRoutes);
 app.use("/", projectRoutes);
 /////////////////////////////////////////////////
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log(`server connected ${PORT}`);
 });
