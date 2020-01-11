@@ -14,7 +14,7 @@ router.get("/login", (req, res) => {
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/tasks",
+    successRedirect: "/projects",
     failureRedirect: "/login"
   }),
   (req, res) => {}
@@ -34,7 +34,7 @@ router.post("/register", (req, res) => {
         return res.redirect("/register");
       } else {
         passport.authenticate("local")(req, res, () => {
-          res.redirect("/tasks");
+          res.redirect("/projects");
         });
       }
     }

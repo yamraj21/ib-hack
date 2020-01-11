@@ -45,10 +45,12 @@ app.use((req, res, next) => {
 
 ////////////////////Routes///////////////////////
 const indexRoutes = require("./routes/index"),
-  tasksRoutes = require("./routes/tasks");
+  tasksRoutes = require("./routes/tasks"),
+  projectRoutes = require("./routes/projects");
 
 app.use("/", indexRoutes);
 app.use("/", tasksRoutes);
+app.use("/", projectRoutes);
 /////////////////////////////////////////////////
 
 app.listen(PORT, function() {
