@@ -46,6 +46,10 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname,"/public")));
 app.set('view engine', 'ejs');
+////////////////////TEST ROUTE////////////////////////////////
+app.get('/dashboard',(req,res)=>{
+  res.render('dashboard');
+})
 
 ////////////////////Routes///////////////////////
 const indexRoutes = require("./routes/index"),
