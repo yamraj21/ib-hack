@@ -57,7 +57,14 @@ var taskJson = [
         start: '2016-01-06',
         end: '2016-01-08',
         title: 'event 1'
-    }
+    },
+    {
+      id: '1',
+      resourceId: 'a',
+      start: '2016-01-06',
+      end: '2016-01-08',
+      title: 'event 1'
+  }
 ]
 var userJson =[{
   id: 'a',
