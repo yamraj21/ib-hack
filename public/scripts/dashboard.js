@@ -16,8 +16,8 @@ function openCal() {
     defaultDate: '2016-01-07',
     editable: true,
     resourceLabelText: 'Users',
-    resources: 'http://localhost:3000/dummyUser',
-    events: 'http://localhost:3000/dummyTask'
+    resources: 'http://localhost:3000/dummyUser', // for users
+    events: 'http://localhost:3000/dummyTask' // task associate with user
   });
 
   calendar.render();

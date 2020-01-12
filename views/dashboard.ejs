@@ -2,11 +2,15 @@
 
 <nav>
     <div class="nav-wrapper">
+        <% if(currentUser) { %>
         <ul id="nav-mobile" class="left hide-on-med-and-down">
             <li><a href="#">Create Project</a></li>
             <li><a href="#">Profile</a></li>
             <li><a href="/logout">Logout</a></li>
         </ul>
+        <% } else { %>
+            <p class="flow-text">AUTOSCHEDY</p>
+        <% } %>
     </div>
 </nav>
 <% if(currentUser){ %>
@@ -66,13 +70,13 @@
         <div id='calendar'></div>
     </div>
     <% } else { %>
-        <div>
-            <i class="large material-icons">adb</i>
+        <div style="margin:auto">
+            <span><i class="large material-icons icon-color" style="padding-left: .6em;">adb</i></span>
         <form action="/login" method="GET">
+            <br>
             <button>Need to login</button>
         </form>
-        </div>  
-        <a class="waves-effect waves-light btn-large" href="#">Wave</a>
+        </div>
  
     <%}%>
 </div>

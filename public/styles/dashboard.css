@@ -46,3 +46,7 @@ nav ul a {
   	transform: translateX(0);
 	transition: transform 0.6s ease-in-out;
 }
+
+i.icon-color {
+  color: #8e24aa;
+}
