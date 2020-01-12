@@ -24,7 +24,7 @@ router.get("/projects", (req, res) => {
 router.post("/projects", (req, res) => {
   let project = req.body.project;
   let user = req.user;
-  project.members.push(user._id);
+  project.members = [user._id];
 
   Project.create(project, (err, project) => {
     if (err) {
