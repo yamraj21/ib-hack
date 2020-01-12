@@ -50,8 +50,21 @@ app.set('view engine', 'ejs');
 app.get('/dashboard', (req, res) => {
   res.render('dashboard');
 })
-var userJson = [{id: "a",title: "User A"},]
-app.get('/dummyUser', (req, res) => { res.json(userJson) })
+var taskJson = [
+    {
+        id: '1',
+        resourceId: 'a',
+        start: '2016-01-06',
+        end: '2016-01-08',
+        title: 'event 1'
+    }
+]
+var userJson =[{
+  id: 'a',
+  title: 'User A'
+}]
+app.get('/dummyUser', (req, res) => {res.json(userJson)})
+app.get('/dummyTask', (req, res) => {res.json(taskJson)})
 ////////////////////Routes///////////////////////
 app.get('/dashboard',(req,res)=>{
   res.render('dashboard',{currentUser})

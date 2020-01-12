@@ -13,10 +13,11 @@ function openCal() {
       center: 'title',
       right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
     },
+    defaultDate: '2016-01-07',
     editable: true,
     resourceLabelText: 'Users',
     resources: 'http://localhost:3000/dummyUser',
-    events: 'https://fullcalendar.io/demo-events.json?single-day&for-resource-timeline'
+    events: 'http://localhost:3000/dummyTask'
   });
 
   calendar.render();
