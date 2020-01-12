@@ -22,7 +22,6 @@ function openCal() {
     resources: 'http://localhost:3000/dummyUser', // for users
     events: 'http://localhost:3000/dummyTask' // task associate with user
   });
-
   calendar.render();
   ran = true;
 }
@@ -34,8 +33,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
-
+// create form
 document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('#create-project');
+  var instances = M.Modal.init(elems);
+});
+// get all project modal
+document.addEventListener('DOMContentLoaded', function() {
+  var elems = document.querySelectorAll('#all_project');
+  // make an ajax request
+  console.log(elems[0]);
   var instances = M.Modal.init(elems);
 });

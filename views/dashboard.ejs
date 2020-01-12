@@ -5,7 +5,7 @@
         <% if(currentUser) { %>
         <ul id="nav-mobile" class="left hide-on-med-and-down">
             <li><a class="modal-trigger" href="#create-project">Create Project</a></li>
-            <li><a href="#">Profile</a></li>
+            <!-- <li><a href="#">Profile</a></li> -->
             <li><a hr
                 
                 ef="/logout">Logout</a></li>
@@ -30,7 +30,7 @@
                     <div class="input-field inline">
                         <div class="rows">
                             <div class="col s8">
-                                <input id="email_inline project-name" type="text" class="validate">
+                                <input id="email_inline project-name" placeholder="project name" type="text" class="validate">
                             </div>
                             <div class="col s4">
                                 <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
@@ -66,7 +66,7 @@
                 </div>
                 <div class="card-action">
                     <!-- Modal Trigger -->
-                    <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
+                    <a class="waves-effect waves-light btn modal-trigger" href="#all_project">
                         Click here
                     </a>
                 </div>
@@ -91,8 +91,16 @@
  
     <%}%>
 </div>
+<!-- All project modal -->
+<div id="all_project" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            get all the projects from api
+          </div>
+                
+      </div>
+</div>  
 <!-- Modal Trigger -->
-<a class="waves-effect waves-light btn modal-trigger" href="#create-project">Modal</a>
 
 <!-- Creat Prject Modal Structure -->
 <div id="create-project" class="modal bottom-sheet">
