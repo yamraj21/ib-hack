@@ -4,9 +4,11 @@
     <div class="nav-wrapper">
         <% if(currentUser) { %>
         <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li><a href="#">Create Project</a></li>
+            <li><a class="modal-trigger" href="#create-project">Create Project</a></li>
             <li><a href="#">Profile</a></li>
-            <li><a href="/logout">Logout</a></li>
+            <li><a hr
+                
+                ef="/logout">Logout</a></li>
         </ul>
         <% } else { %>
             <p class="flow-text">AUTOSCHEDY</p>
@@ -20,14 +22,23 @@
           <!-- Promo Content 1 goes here -->
             <div class="card teal darken-1">
                 <div class="card-content white-text">
-                    <span class="card-title">Get schedule</span>
+                    <span class="card-title">Get project schedule</span>
                     <p></p>
                 </div>
                 <div class="card-action">
                     <!-- Modal Trigger -->
-                    <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
-                        Click here
-                    </a>
+                    <div class="input-field inline">
+                        <div class="rows">
+                            <div class="col s8">
+                                <input id="email_inline project-name" type="text" class="validate">
+                            </div>
+                            <div class="col s4">
+                                <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
+                                    Click here
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
         </div>
         </div>
@@ -71,7 +82,7 @@
     </div>
     <% } else { %>
         <div style="margin:auto">
-            <span><i class="large material-icons icon-color" style="padding-left: .6em;">adb</i></span>
+            <span><i class="large material-icons icon-color" style="padding-left: .65em;">adb</i></span>
         <form action="/login" method="GET">
             <br>
             <button>Need to login</button>
@@ -80,4 +91,37 @@
  
     <%}%>
 </div>
+<!-- Modal Trigger -->
+<a class="waves-effect waves-light btn modal-trigger" href="#create-project">Modal</a>
+
+<!-- Creat Prject Modal Structure -->
+<div id="create-project" class="modal bottom-sheet">
+  <div class="modal-content">
+    <!-- FORM FOR CREATE PROJECT  -->
+    <div class="row">
+        <form class="col s12" action="#" method="POST">
+          <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+              <input placeholder="Project name" type="text" class="validate">
+              <!-- <label for="rst_finame">First Name</label> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+              <input placeholder="Start date" type="date" class="validate">
+              <!-- <label for="rst_finame">First Name</label> -->
+            </div>
+          </div>
+          <button type="submit" style="display: block;margin:auto;">Create Project</button>
+        </form>
+      </div>
+            
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Made with love :)</a>
+  </div>
+</div>
+       
 <%- include('partials/dashboardFooter.ejs') -%>

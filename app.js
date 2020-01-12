@@ -70,7 +70,6 @@ app.get("/dummyUser", (req, res) => {
 app.get("/dummyTask", (req, res) => {
   res.json(taskJson);
 });
-
 ////////////////////Routes///////////////////////
 
 const indexRoutes = require("./routes/index"),
