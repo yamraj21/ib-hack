@@ -8,25 +8,27 @@ router.use(middleware.isLoggedIn);
 router.use(middleware.isProjectAccessAllowed);
 
 router.get("/projects/:id/tasks", (req, res) => {
-  Project.findById(req.params.id, (err, project) => {
-    if (err) {
-      console.log(err);
-      res.redirect("/projects");
-    } else {
-      Task.find({})
-        .in(project.tasks)
-        .populate("assigned_to")
-        .populate("created_by")
-        .exec((err, tasks) => {
-          if (err) {
-            console.log(err);
-            res.redirect("/projects/" + req.params.id);
-          } else {
-            res.send({ tasks: tasks });
-          }
-        });
-    }
-  });
+  Project.findById(req.params.id)
+    .populate("members")
+    .exec((err, project) => {
+      if (err) {
+        console.log(err);
+        res.redirect("/dashboard");
+      } else {
+        Task.find({})
+          .in(project.tasks)
+          .populate("assigned_to")
+          .populate("created_by")
+          .exec((err, tasks) => {
+            if (err) {
+              console.log(err);
+              res.redirect("/dashboard");
+            } else {
+              res.send({ tasks: tasks, members: project.members });
+            }
+          });
+      }
+    });
 });
 
 router.post("/projects/:id/tasks", (req, res) => {
@@ -34,16 +36,17 @@ router.post("/projects/:id/tasks", (req, res) => {
   Task.create(task, (err, task) => {
     if (err) {
       console.log(err);
-      res.redirect("/projects/" + req.params.id + "/tasks");
+      // res.redirect("/projects/" + req.params.id + "/tasks");
+      res.redirect("/dashboard");
     } else {
       Project.findById(req.params.id, (err, project) => {
         project.tasks.push(task);
         project.save((err, task) => {
           if (err) {
             console.log(err);
-            res.redirect("/projects/" + req.params.id + "/tasks");
+            res.redirect("/dashboard");
           } else {
-            res.redirect("/projects/" + req.params.id + "/tasks");
+            res.redirect("/dashboard");
           }
         });
       });
@@ -58,7 +61,7 @@ router.get(
     Task.findById(req.params.task_id, (err, task) => {
       if (err) {
         console.log(err);
-        res.redirect("/projects/" + req.params.id + "/tasks");
+        res.redirect("/dashboard");
       } else {
         res.send({ task: task });
       }
@@ -73,9 +76,9 @@ router.post(
     Task.findByIdAndUpdate(req.params.task_id, req.body.task, (err, task) => {
       if (err) {
         console.log(err);
-        res.redirect("/projects/" + req.params.id + "/tasks");
+        res.redirect("/dashboard");
       } else {
-        res.redirect("/projects/" + req.params.id + "/tasks");
+        res.redirect("/dashboard");
       }
     });
   }
@@ -88,7 +91,7 @@ router.post(
     Project.findById(req.params.id, async (err, project) => {
       if (err) {
         console.log(err);
-        res.redirect("/projects/" + req.params.id + "/tasks");
+        res.redirect("/dashboard");
       } else {
         project.tasks = await project.tasks.filter(
           project_task => project_task != req.params.task_id
@@ -99,9 +102,9 @@ router.post(
         Task.findByIdAndDelete(req.params.task_id, (err, task) => {
           if (err) {
             console.log(err);
-            res.redirect("/projects/" + req.params.id + "/tasks");
+            res.redirect("/dashboard");
           } else {
-            res.redirect("/projects/" + req.params.id + "/tasks");
+            res.redirect("/dashboard");
           }
         });
       }

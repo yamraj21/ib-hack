@@ -5,7 +5,7 @@ const express = require("express"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
   User = require("./models/user"),
-  path = require('path');
+  path = require("path");
 
 const PORT = process.env.PORT || 3000;
 
@@ -45,30 +45,34 @@ app.use((req, res, next) => {
 });
 
 app.use(express.static(path.join(__dirname, "/public")));
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 ////////////////////TEST ROUTE////////////////////////////////
-app.get('/dashboard', (req, res) => {
-  res.render('dashboard');
-})
+
 var taskJson = [
-    {
-        id: '1',
-        resourceId: 'a',
-        start: '2016-01-06',
-        end: '2016-01-08',
-        title: 'event 1'
-    }
-]
-var userJson =[{
-  id: 'a',
-  title: 'User A'
-}]
-app.get('/dummyUser', (req, res) => {res.json(userJson)})
-app.get('/dummyTask', (req, res) => {res.json(taskJson)})
+  {
+    id: "1",
+    resourceId: "a", //username
+    start: "2016-01-06",
+    end: "2016-01-08",
+    title: "event 1"
+  }
+];
+var userJson = [
+  {
+    id: "a",
+    title: "User A"
+  }
+];
+
+app.get("/dummyUser", (req, res) => {
+  res.json(userJson);
+});
+app.get("/dummyTask", (req, res) => {
+  res.json(taskJson);
+});
+
 ////////////////////Routes///////////////////////
-app.get('/dashboard',(req,res)=>{
-  res.render('dashboard',{currentUser})
-})
+
 const indexRoutes = require("./routes/index"),
   tasksRoutes = require("./routes/tasks"),
   projectRoutes = require("./routes/projects");
@@ -78,6 +82,6 @@ app.use("/", tasksRoutes);
 app.use("/", projectRoutes);
 /////////////////////////////////////////////////
 
-app.listen(PORT, function () {
+app.listen(PORT, function() {
   console.log(`server connected ${PORT}`);
 });

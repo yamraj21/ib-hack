@@ -4,7 +4,7 @@ const express = require("express"),
   router = express.Router({ mergeParams: true });
 
 router.get("/", (req, res) => {
-  res.redirect("/login");
+  res.redirect("/dashboard");
 });
 
 router.get("/login", (req, res) => {
@@ -30,7 +30,7 @@ router.post("/register", (req, res) => {
         return res.redirect("/login");
       } else {
         passport.authenticate("local")(req, res, () => {
-          res.redirect("/projects");
+          res.redirect("/dashboard");
         });
       }
     }
@@ -40,6 +40,10 @@ router.post("/register", (req, res) => {
 router.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/");
+});
+
+router.get("/dashboard", (req, res) => {
+  res.render("dashboard");
 });
 
 module.exports = router;

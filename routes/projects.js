@@ -14,7 +14,7 @@ router.get("/projects", (req, res) => {
     .exec((err, projects) => {
       if (err) {
         console.log(err);
-        res.redirect("/projects");
+        res.redirect("/dashboard");
       } else {
         res.send({ projects: projects });
       }
@@ -29,15 +29,15 @@ router.post("/projects", (req, res) => {
   Project.create(project, (err, project) => {
     if (err) {
       console.log(err);
-      res.redirect("/projects");
+      res.redirect("/dashboard");
     } else {
       user.projects.push(project);
       user.save((err, user) => {
         if (err) {
           console.log(err);
-          res.redirect("/projects");
+          res.redirect("/dashboard");
         } else {
-          res.redirect("/projects");
+          res.redirect("/dashboard");
         }
       });
     }
@@ -48,7 +48,7 @@ router.get("/projects/:id", middleware.isProjectAccessAllowed, (req, res) => {
   Project.findById(req.params.id, (err, project) => {
     if (err) {
       console.log(err);
-      res.redirect("/projects");
+      res.redirect("/dashboard");
     } else {
       res.redirect("/projects/" + project._id + "/tasks");
     }
@@ -65,9 +65,9 @@ router.post(
       (err, project) => {
         if (err) {
           console.log(err);
-          res.redirect("/projects");
+          res.redirect("/dashboard");
         } else {
-          res.redirect("/projects");
+          res.redirect("/dashboard");
         }
       }
     );
@@ -102,7 +102,7 @@ router.post(
           if (err) console.log(err);
         });
 
-        res.render("/projects");
+        res.render("/dashboard");
       });
     // Project.findByIdAndDelete(req.params.id, (err, project) => {
     //   if (err) {
