@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const express = require("express"),
   app = express(),
   mongoose = require("mongoose"),
@@ -8,7 +11,7 @@ const express = require("express"),
   path = require("path");
 
 const PORT = process.env.PORT || 3000;
-
+console.log(process.env.DATABASE_URI)
 mongoose
   .connect(process.env.DATABASE_URI, {
     useNewUrlParser: true,
@@ -70,8 +73,10 @@ app.get("/dummyUser", (req, res) => {
 app.get("/dummyTask", (req, res) => {
   res.json(taskJson);
 });
+app.get('/dashboard-2',(req,res)=>{
+  res.render('dashboard-2');
+})
 ////////////////////Routes///////////////////////
-
 const indexRoutes = require("./routes/index"),
   tasksRoutes = require("./routes/tasks"),
   projectRoutes = require("./routes/projects");

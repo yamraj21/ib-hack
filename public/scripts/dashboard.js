@@ -2,7 +2,7 @@ var ran = false;
 function openCal() {
   if(ran) return;
   var calendarEl = document.getElementById('calendar');
-  var projectName = document.getElementById('project-name');
+  var projectName = document.getElementById('project-name').value;
   console.log(projectName);
   var calendar = new FullCalendar.Calendar(calendarEl, {
     plugins: [ 'interaction', 'resourceTimeline' ],
