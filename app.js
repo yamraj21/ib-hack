@@ -9,7 +9,8 @@ const express = require("express"),
   LocalStrategy = require("passport-local"),
   User = require("./models/user"),
   path = require("path");
-
+const dotenv = require("dotenv");
+dotenv.config();
 const PORT = process.env.PORT || 3000;
 console.log(process.env.DATABASE_URI)
 mongoose

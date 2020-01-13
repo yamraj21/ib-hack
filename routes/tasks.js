@@ -16,6 +16,7 @@ router.get("/projects/:id/tasks", (req, res) => {
         res.redirect("/dashboard");
       } else {
         Task.find({})
+          .where("_id")
           .in(project.tasks)
           .populate("assigned_to")
           .populate("created_by")
@@ -33,6 +34,15 @@ router.get("/projects/:id/tasks", (req, res) => {
 
 router.post("/projects/:id/tasks", (req, res) => {
   let task = req.body.task;
+  task.created_by = req.params.id;
+  task.assigned_to = req.params.id;
+  task.work_left = task.time_required;
+  let date1 = new Date(task.start_date);
+  let date2 = new Date(task.due_date);
+  task.work_per_day = Math.ceil(
+    task.work_left / (date2.getTime() - date1.getTime() / (1000 * 3600 * 24))
+  );
+
   Task.create(task, (err, task) => {
     if (err) {
       console.log(err);
