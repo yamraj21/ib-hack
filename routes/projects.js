@@ -51,7 +51,10 @@ router.get("/projects/:id", middleware.isProjectAccessAllowed, (req, res) => {
       console.log(err);
       res.redirect("/");
     } else {
-      res.redirect("/projects/" + project._id + "/tasks");
+      if (!project) {
+        console.log("project not found");
+        res.redirect("/");
+      } else res.redirect("/projects/" + project._id + "/tasks");
     }
   });
 });
@@ -76,6 +79,10 @@ router.delete(
       .populate("members.projects")
       .lean()
       .exec((err, project) => {
+        if (!project) {
+          console.log("project not found");
+          res.redirect("/");
+        }
         project.members.forEach(member => {
           member.projects = member.projects.filter(
             member_project => !_.isEqual(member_project, project._id)
@@ -104,6 +111,10 @@ router.post("/projects/:id/add_members", (req, res) => {
   Project.findById(req.params.id, (err, project) => {
     if (err) console.log(err);
     else {
+      if (!project) {
+        console.log("project not found");
+        res.redirect("/");
+      }
       User.findById(req.body.member, (err, user) => {
         if (err) console.log(err);
         else {
