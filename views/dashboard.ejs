@@ -1,120 +1,103 @@
 <%- include('partials/dashboardHeader.ejs') -%>
 
 <nav>
-  <div class="nav-wrapper">
-    <% if(currentUser) { %>
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
-      <li>
-        <a class="modal-trigger" href="#create-project">Create Project</a>
-      </li>
-      <li><a href="#">Profile</a></li>
-      <li><a hr ef="/logout">Logout</a></li>
-    </ul>
-    <% } else { %>
-    <p class="flow-text">AUTOSCHEDY</p>
-    <% } %>
-  </div>
+    <div class="nav-wrapper">
+        <% if(currentUser) { %>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li><a class="modal-trigger" href="#create-project">Create Project</a></li>
+            <!-- <li><a href="#">Profile</a></li> -->
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+        <% } else { %>
+            <p class="flow-text">AUTOSCHEDY</p>
+        <% } %>
+    </div>
 </nav>
 <% if(currentUser){ %>
+<div class="container" id="user-calender"></div>
 <div class="container top-margin">
-  <div class="row">
-    <div class="col s4 hoverable ">
-      <!-- Promo Content 1 goes here -->
-      <div class="card teal darken-1">
-        <div class="card-content white-text">
-          <span class="card-title">Get project schedule</span>
-          <p></p>
+    <d+iv class="row">
+        <div class="col s4 hoverable ">
+          <!-- Promo Content 1 goes here -->
+            <div class="card teal darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Get project schedule</span>
+                    <p></p>
+                </div>
+                <div class="card-action">
+                    <!-- Modal Trigger -->
+                    <div class="input-field inline">
+                        <div class="rows">
+                            <div class="col s8">
+                                <input id="project-name" placeholder="project name" type="text" class="validate">
+                            </div>
+                            <div class="col s4">
+                                <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
+                                    Click here
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
-        <div class="card-action">
-          <!-- Modal Trigger -->
-          <div class="input-field inline">
-            <div class="rows">
-              <div class="col s8">
-                <input
-                  id="email_inline project-name"
-                  type="text"
-                  class="validate"
-                />
-              </div>
-              <div class="col s4">
-                <a
-                  class="waves-effect waves-light btn modal-trigger"
-                  href="#todays-task"
-                >
-                  Click here
-                </a>
-              </div>
+        </div>
+        <div class="col s4 hoverable">
+            <div class="card teal darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">Create a task</span>
+                    <p></p>
+                </div>
+                <div class="card-action">
+                    <!-- Modal Trigger -->
+                    <a class="waves-effect waves-light btn modal-trigger" href="#todays-task">
+                        Click here
+                    </a>
+                </div>
+        </div>
+          <!-- Promo Content 2 goes here -->
+        </div>
+        <div class="col s4 hoverable">
+          <!-- Promo Content 3 goes here -->
+            <div class="card  teal darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title">all projects</span>
+                    <p></p>
+                </div>
+                <div class="card-action">
+                    <!-- Modal Trigger -->
+                    <a class="waves-effect waves-light btn modal-trigger" href="#all_project">
+                        Click here
+                    </a>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-    <div class="col s4 hoverable">
-      <div class="card teal darken-1">
-        <div class="card-content white-text">
-          <span class="card-title">Create a task</span>
-          <p></p>
-        </div>
-        <div class="card-action">
-          <!-- Modal Trigger -->
-          <a
-            class="waves-effect waves-light btn modal-trigger"
-            href="#todays-task"
-          >
-            Click here
-          </a>
-        </div>
-      </div>
-      <!-- Promo Content 2 goes here -->
-    </div>
-    <div class="col s4 hoverable">
-      <!-- Promo Content 3 goes here -->
-      <div class="card  teal darken-1">
-        <div class="card-content white-text">
-          <span class="card-title">all projects</span>
-          <p></p>
-        </div>
-        <div class="card-action">
-          <!-- Modal Trigger -->
-          <a
-            class="waves-effect waves-light btn modal-trigger"
-            href="#todays-task"
-          >
-            Click here
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Page Content goes here -->
+      </d+iv>
+    <!-- Page Content goes here -->
+    
 
-  <!-- Modal Structure -->
-  <div id="todays-task" class="modal">
-    <div id="calendar"></div>
-  </div>
-  <% } else { %>
-  <div style="margin:auto">
-    <span
-      ><i class="large material-icons icon-color" style="padding-left: .65em;"
-        >adb</i
-      ></span
-    >
-    <form action="/login" method="GET">
-      <br />
-      <button>Need to login</button>
-    </form>
-  </div>
-
-  <%}%>
+    <!-- Modal Structure -->
+    <div id="todays-task" class="modal">
+        <div id='calendar'></div>
+    </div>
+    <% } else { %>
+        <div style="margin:auto">
+            <span><i class="large material-icons icon-color" style="padding-left: .65em;">adb</i></span>
+        <form action="/login" method="GET">
+            <br>
+            <button>Need to login</button>
+        </form>
+        </div>
+ 
+    <%}%>
 </div>
 <!-- All project modal -->
 <div id="all_project" class="modal">
-  <div class="modal-content">
-    <div class="row">
-      get all the projects from api
-    </div>
-  </div>
-</div>
+    <div class="modal-content">
+        <div class="row">
+            get all the projects from api
+          </div>   
+      </div>
+</div>  
 <!-- Modal Trigger -->
 
 <!-- Creat Prject Modal Structure -->
@@ -122,6 +105,7 @@
   <div class="modal-content">
     <!-- FORM FOR CREATE PROJECT  -->
     <div class="row">
+<<<<<<< HEAD
       <form class="col s12" action="/projects" method="POST">
         <div class="row">
           <div class="input-field col s3"></div>
@@ -165,19 +149,31 @@
               name="project[due_date]"
               class="validate datepicker"
             />
+=======
+        <form class="col s12" action="#" method="POST">
+          <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+              <input placeholder="Project name" type="text" class="validate">
+              <!-- <label for="rst_finame">First Name</label> -->
+            </div>
           </div>
-        </div>
-        <button type="submit" style="display: block;margin:auto;">
-          Create Project
-        </button>
-      </form>
-    </div>
+          <div class="row">
+            <div class="input-field col s3"></div>
+            <div class="input-field col s6">
+              <input placeholder="Start date" type="date" class="validate">
+              <!-- <label for="rst_finame">First Name</label> -->
+            </div>
+>>>>>>> 48bf239d6ee645869ab10e7fc24c3dcd157915c5
+          </div>
+          <button type="submit" style="display: block;margin:auto;">Create Project</button>
+        </form>
+      </div>
+            
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-close waves-effect waves-green btn-flat"
-      >Made with love :)</a
-    >
+    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Made with love :)</a>
   </div>
 </div>
-
+       
 <%- include('partials/dashboardFooter.ejs') -%>

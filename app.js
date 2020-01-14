@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const express = require("express"),
   app = express(),
   mongoose = require("mongoose"),
@@ -5,8 +8,8 @@ const express = require("express"),
   passport = require("passport"),
   LocalStrategy = require("passport-local"),
   User = require("./models/user"),
-  path = require("path");
-const dotenv = require("dotenv");
+  path = require("path"),
+  dotenv = require("dotenv");
 dotenv.config();
 const PORT = process.env.PORT || 3214;
 
@@ -71,8 +74,10 @@ app.get("/dummyUser", (req, res) => {
 app.get("/dummyTask", (req, res) => {
   res.json(taskJson);
 });
+app.get("/dashboard-2", (req, res) => {
+  res.render("dashboard-2");
+});
 ////////////////////Routes///////////////////////
-
 const indexRoutes = require("./routes/index"),
   tasksRoutes = require("./routes/tasks"),
   projectRoutes = require("./routes/projects"),
