@@ -8,8 +8,8 @@ router.get("/", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  // res.render("auth");
-  res.send({ message: "Login Page" });
+  res.render("auth");
+  // res.send({ message: "Login Page" });
 });
 
 router.post(
@@ -44,8 +44,8 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/dashboard", (req, res) => {
-  // res.render("dashboard");
-  res.send({ message: "Dashboard Page", user: req.user });
+  res.render("dashboard");
+  // res.send({ message: "Dashboard Page", user: req.user });
 });
 
 module.exports = router;
