@@ -8,7 +8,8 @@ router.get("/", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  res.render("auth");
+  // res.render("auth");
+  res.send({ message: "Login Page" });
 });
 
 router.post(
@@ -27,7 +28,7 @@ router.post("/register", (req, res) => {
     (err, user) => {
       if (err) {
         console.log(err);
-        return res.redirect("/login");
+        res.redirect("/login");
       } else {
         passport.authenticate("local")(req, res, () => {
           res.redirect("/dashboard");
@@ -43,7 +44,8 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/dashboard", (req, res) => {
-  res.render("dashboard");
+  // res.render("dashboard");
+  res.send({ message: "Dashboard Page", user: req.user });
 });
 
 module.exports = router;

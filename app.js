@@ -8,7 +8,7 @@ const express = require("express"),
   path = require("path");
 const dotenv = require("dotenv");
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3214;
 
 mongoose
   .connect(process.env.DATABASE_URI, {
@@ -75,9 +75,11 @@ app.get("/dummyTask", (req, res) => {
 
 const indexRoutes = require("./routes/index"),
   tasksRoutes = require("./routes/tasks"),
-  projectRoutes = require("./routes/projects");
+  projectRoutes = require("./routes/projects"),
+  userRoutes = require("./routes/users");
 
 app.use("/", indexRoutes);
+app.use("/", userRoutes);
 app.use("/", tasksRoutes);
 app.use("/", projectRoutes);
 /////////////////////////////////////////////////

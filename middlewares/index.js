@@ -5,27 +5,28 @@ let middleObj = {};
 middleObj.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) return next();
   else {
-    res.redirect("/login");
+    res.redirect("/");
   }
 };
 
 middleObj.isProjectAccessAllowed = (req, res, next) => {
   next();
-  // if (req.isAuthenticated()) {
+  // if (req.isAuthenticated() && req.params.id) {
   //   Project.findById(req.params.id, (err, project) => {
   //     if (err) {
   //       console.log(err);
-  //       res.redirect("/projects");
+  //       res.redirect("/");
   //     } else {
   //       if (project.members.indexOf(req.user._id) !== -1) {
   //         next();
   //       } else {
-  //         res.redirect("/projects");
+  //         res.redirect("/");
   //       }
   //     }
   //   });
   // } else {
-  //   res.redirect("/projects");
+  //   console.log('not authenticated or '+ req.params.id);
+  //   res.redirect("/");
   // }
 };
 
