@@ -12,23 +12,28 @@ router.get("/projects/:id/tasks", (req, res) => {
   Project.findById(req.params.id)
     .populate("members")
     .exec((err, project) => {
-      if (err) {
-        console.log(err);
-        res.redirect("/dashboard");
+      if (!project) {
+        console.log("no project found");
+        res.redirect("/");
       } else {
-        Task.find({})
-          .where("_id")
-          .in(project.tasks)
-          .populate("assigned_to")
-          .populate("created_by")
-          .exec((err, tasks) => {
-            if (err) {
-              console.log(err);
-              res.redirect("/dashboard");
-            } else {
-              res.send({ tasks: tasks, members: project.members });
-            }
-          });
+        if (err) {
+          console.log(err);
+          res.redirect("/dashboard");
+        } else {
+          Task.find({})
+            .where("_id")
+            .in(project.tasks)
+            .populate("assigned_to")
+            .populate("created_by")
+            .exec((err, tasks) => {
+              if (err) {
+                console.log(err);
+                res.redirect("/dashboard");
+              } else {
+                res.send({ tasks: tasks, members: project.members });
+              }
+            });
+        }
       }
     });
 });
@@ -122,7 +127,5 @@ router.post(
     });
   }
 );
-
-
 
 module.exports = router;
