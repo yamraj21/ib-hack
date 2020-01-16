@@ -1,1 +1,3 @@
-# ib-hack
+# AutoSchedy
+
+Do you miss your important tasks just because of some irrelevant task distracts you? Due to your workload, do you find it hard to manage your tasks? Steve Jobs said, "focus is about saying no". This is the reason everyone decides to make their daily schedule to avoid conflicts between tasks and achieves them on time. But the problem is its too hectic to make schedule and maintain a dairy (dude it's 2020, don't do that). This is why AutoSchedy is here. Just give it your tasks and it will automatically generate your daily schedule. Moreover, you can collaborate with your team members on projects and schedule the tasks within the team as well. So, you look at the bigger picture and AutoSchedy will deal with the smaller tedious parts.

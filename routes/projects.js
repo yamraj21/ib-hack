@@ -4,7 +4,8 @@ const express = require("express"),
   Project = require("../models/project"),
   Task = require("../models/task"),
   User = require("../models/user"),
-  _ = require("lodash");
+  _ = require("lodash"),
+  axios = require("axios");
 
 router.use(middleware.isLoggedIn);
 
@@ -107,7 +108,7 @@ router.delete(
   }
 );
 
-router.post("/projects/:id/add_members", (req, res) => {
+router.post("/projects/:id/add_member", (req, res) => {
   Project.findById(req.params.id, (err, project) => {
     if (err) console.log(err);
     else {
@@ -127,6 +128,47 @@ router.post("/projects/:id/add_members", (req, res) => {
                 if (err) console.log(err);
                 else {
                   res.redirect("/dashboard");
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+});
+
+router.post("/projects/:id/rem_member", (req, res) => {
+  Project.findById(req.params.id, (err, project) => {
+    if (err) console.log(err);
+    else {
+      if (!project) {
+        console.log("project not found");
+        res.redirect("/");
+      }
+      User.findById(req.body.member, (err, user) => {
+        if (err) console.log(err);
+        else {
+          project.members = project.members.filter(
+            member => !_.isEqual(member._id, user._id)
+          );
+          user.projects = user.projects.filter(
+            user_project => !_.isEqual(user_project._id, project._id)
+          );
+          project.save((err, project) => {
+            if (err) console.log(err);
+            else {
+              user.save((err, user) => {
+                if (err) console.log(err);
+                else {
+                  if (project.members.length == 0) {
+                    axios
+                      .delete("/projects/" + project._id)
+                      .then(() => res.redirect("/"))
+                      .catch(e => console.log(e));
+                  } else {
+                    res.redirect("/");
+                  }
                 }
               });
             }
