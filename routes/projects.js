@@ -46,17 +46,7 @@ router.post("/projects", (req, res) => {
 });
 
 router.get("/projects/:id", middleware.isProjectAccessAllowed, (req, res) => {
-  Project.findById(req.params.id, (err, project) => {
-    if (err) {
-      console.log(err);
-      res.redirect("/");
-    } else {
-      if (!project) {
-        console.log("project not found");
-        res.redirect("/");
-      } else res.redirect("/projects/" + project._id + "/tasks");
-    }
-  });
+  res.redirect("/projects/" + project._id + "/tasks");
 });
 
 router.put("/projects/:id", middleware.isProjectAccessAllowed, (req, res) => {
@@ -82,27 +72,28 @@ router.delete(
         if (!project) {
           console.log("project not found");
           res.redirect("/");
+        } else {
+          project.members.forEach(member => {
+            member.projects = member.projects.filter(
+              member_project => !_.isEqual(member_project, project._id)
+            );
+            User.findByIdAndUpdate(member._id, member, err => {
+              if (err) console.log(err);
+            });
+          });
+
+          Task.deleteMany()
+            .where("_id")
+            .in(project.tasks)
+            .exec(err => {
+              if (err) console.log(err);
+            });
+
+          Project.findByIdAndDelete(project._id, err => {
+            if (err) console.log(err);
+            else res.redirect("/dashboard");
+          });
         }
-        project.members.forEach(member => {
-          member.projects = member.projects.filter(
-            member_project => !_.isEqual(member_project, project._id)
-          );
-          User.findByIdAndUpdate(member._id, member, err => {
-            if (err) console.log(err);
-          });
-        });
-
-        Task.deleteMany()
-          .where("_id")
-          .in(project.tasks)
-          .exec(err => {
-            if (err) console.log(err);
-          });
-
-        Project.findByIdAndDelete(project._id, err => {
-          if (err) console.log(err);
-          else res.redirect("/dashboard");
-        });
       });
   }
 );
@@ -112,51 +103,58 @@ router.post("/projects/:id/add_member", (req, res) => {
     if (err) {
       console.log(err);
       res.redirect("/");
+    } else if (!project) {
+      console.log("project not found");
+      res.redirect("/");
     } else {
-      if (!project) {
-        console.log("project not found");
-        res.redirect("/");
-      } else {
-        User.findById(req.body.member, (err, user) => {
-          if (err) {
-            console.log(err);
-            res.redirect("/");
-          } else {
-            project.members.push(req.body.member);
-            user.projects.push(req.params.id);
-            project.save((err, project) => {
-              if (err) {
-                console.log(err);
-                res.redirect("/");
-              } else {
-                user.save((err, user) => {
-                  if (err) {
-                    console.log(err);
-                    res.redirect("/");
-                  } else {
-                    res.redirect("/");
-                  }
-                });
-              }
-            });
-          }
-        });
-      }
+      User.findById(req.body.member, (err, user) => {
+        if (err) {
+          console.log(err);
+          res.redirect("/");
+        } else if (!user) {
+          console.log("user not found");
+          res.redirect("/");
+        } else {
+          project.members.push(req.body.member);
+          user.projects.push(req.params.id);
+          project.save((err, project) => {
+            if (err) {
+              console.log(err);
+              res.redirect("/");
+            } else {
+              user.save((err, user) => {
+                if (err) {
+                  console.log(err);
+                  res.redirect("/");
+                } else {
+                  res.redirect("/");
+                }
+              });
+            }
+          });
+        }
+      });
     }
   });
 });
 
 router.post("/projects/:id/rem_member", (req, res) => {
   Project.findById(req.params.id, (err, project) => {
-    if (err) console.log(err);
-    else {
-      if (!project) {
-        console.log("project not found");
-        res.redirect("/");
-      }
+    if (err) {
+      console.log(err);
+      res.redirect("/");
+    } else if (!project) {
+      console.log("project not found");
+      res.redirect("/");
+    } else {
       User.findById(req.body.member, (err, user) => {
-        if (err) console.log(err);
-        else {
+        if (err) {
+          console.log(err);
+          res.redirect("/");
+        } else if (!user) {
+          console.log("no user found");
+          res.redirect("/");
+        } else {
           project.members = project.members.filter(
             member => !_.isEqual(member._id, user._id)
           );
@@ -164,15 +162,23 @@ router.post("/projects/:id/rem_member", (req, res) => {
             user_project => !_.isEqual(user_project._id, project._id)
           );
           project.save((err, project) => {
-            if (err) console.log(err);
-            else {
+            if (err) {
+              console.log(err);
+              res.redirect("/");
+            } else {
               user.save((err, user) => {
-                if (err) console.log(err);
-                else {
+                if (err) {
+                  console.log(err);
+                  res.redirect("/");
+                } else {
                   if (project.members.length == 0) {
                     Project.findByIdAndDelete(project._id, (err, project) => {
-                      if (err) console.log(err);
-                      res.redirect("/");
+                      if (err) {
+                        console.log(err);
+                        res.redirect("/");
+                      } else {
+                        res.redirect("/");
+                      }
                     });
                   } else {
                     res.redirect("/");
